@@ -32,6 +32,14 @@ param appServicePlanName string
 @allowed(['S1', 'B1'])
 param appServicePlanSku string = 'B1'
 
+@description('Name of the function app')
+param functionAppName string
+
+@description('API key for external service ABC')
+@secure()
+param apiKey string = '1234567890'
+
+
 module storageAccount 'modules/storage-account.bicep' = {
   name: 'deploy-${storageAccountName}'
   params: {
@@ -72,7 +80,23 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
 }
 
 
+module functionApp 'modules/function-app.bicep' = {
+  name: 'deploy-${functionAppName}'
+  params: {
+    location: location
+    tags: tags
+    applicationInsightsName: applicationInsightsName
+    appServicePlanName: appServicePlanName
+    functionAppName: functionAppName
+    storageAccountName: storageAccountName
+  }
+}
+
+
+
 output storageAccountName string = storageAccount.outputs.storageAccountName
 output applicationInsightsName string = applicationInsights.outputs.applicationInsightsName
 output appServicePlanName string = appServicePlan.name
+output functionAppName string = functionApp.outputs.functionAppName
+
 
