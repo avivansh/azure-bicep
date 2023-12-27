@@ -22,6 +22,8 @@ param sftpStorageAccountName string
 ])
 param storageAccountSku string = 'Standard_LRS'
 
+@description('Name of the application insights')
+param applicationInsightsName string
 
 module storageAccount 'modules/storage-account.bicep' = {
   name: 'deploy-${storageAccountName}'
@@ -32,7 +34,6 @@ module storageAccount 'modules/storage-account.bicep' = {
     tags: tags
   }
 }
-
 
 module sftpStorageAccount 'modules/storage-account.bicep' = {
   name: 'deploy-${sftpStorageAccountName}'
@@ -45,6 +46,17 @@ module sftpStorageAccount 'modules/storage-account.bicep' = {
   }
 }
 
+module applicationInsights 'modules/application-insights.bicep' = {
+  name: 'deploy-${applicationInsightsName}'
+  params: {
+    applicationInsightsName: applicationInsightsName
+    location: location
+    tags: tags
+  }
+}
+
 
 output storageAccountName string = storageAccount.outputs.storageAccountName
+output applicationInsightsName string = applicationInsights.outputs.applicationInsightsName
+
 

@@ -7,6 +7,9 @@
     },
     "sftpStorageAccountName": {
       "value": "biceplearnudemysftp"
+    },
+    "applicationInsightsName": {
+      "value": "appi-biceplearnudemy"
     }
   }
 }
