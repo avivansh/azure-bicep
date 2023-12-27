@@ -85,10 +85,10 @@ module functionApp 'modules/function-app.bicep' = {
   params: {
     location: location
     tags: tags
-    applicationInsightsName: applicationInsightsName
-    appServicePlanName: appServicePlanName
+    applicationInsightsName: applicationInsights.outputs.applicationInsightsName
+    appServicePlanName: appServicePlan.name
     functionAppName: functionAppName
-    storageAccountName: storageAccountName
+    storageAccountName: storageAccount.outputs.storageAccountName
   }
 }
 
