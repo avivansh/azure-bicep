@@ -25,6 +25,13 @@ param storageAccountSku string = 'Standard_LRS'
 @description('Name of the application insights')
 param applicationInsightsName string
 
+@description('Name of the app service plan')
+param appServicePlanName string
+
+@description('Sku of the app service plan')
+@allowed(['S1', 'B1'])
+param appServicePlanSku string = 'B1'
+
 module storageAccount 'modules/storage-account.bicep' = {
   name: 'deploy-${storageAccountName}'
   params: {
@@ -55,8 +62,17 @@ module applicationInsights 'modules/application-insights.bicep' = {
   }
 }
 
+resource appServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
+  name: appServicePlanName
+  location: location
+  tags: tags
+  sku: {
+    name: appServicePlanSku
+  }
+}
+
 
 output storageAccountName string = storageAccount.outputs.storageAccountName
 output applicationInsightsName string = applicationInsights.outputs.applicationInsightsName
-
+output appServicePlanName string = appServicePlan.name
 
